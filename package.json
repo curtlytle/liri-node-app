@@ -2,6 +2,24 @@
   "name": "liri-node-app",
   "version": "0.0.1",
   "dependencies": {
-    
-  }
+    "inquirer": "^4.0.0",
+    "require": "^2.4.20",
+    "twitter": "^1.7.1"
+  },
+  "description": "node homework",
+  "main": "keys.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curtlytle/liri-node-app.git"
+  },
+  "author": "Curt Lytle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/curtlytle/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/curtlytle/liri-node-app#readme"
 }
