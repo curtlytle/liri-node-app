@@ -7,6 +7,7 @@ var request = require("request");
 var twitterKeys = require("./keys.js");
 var inq = require("inquirer");
 var Twitter = require('twitter');
+var Spotify = require('node-spotify-api');
 
 inq.prompt([
     {
@@ -55,7 +56,7 @@ function myTweets() {
     });
 
     var params = {};
-    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             for (var i = 0; i < tweets.length && i < 19; i++) {
                 var tweet = tweets[i];
@@ -69,13 +70,44 @@ function myTweets() {
 }
 
 function spotifyThisSong() {
+    var spotify = new Spotify({
+        id: '88e9d4e923924037b9f5ebe0ee26b171',
+        secret: '1e694c52bc704e43ac4c3cb261820c01' });
+
+    var songName = "The Sign";
+    if (userInput.length > 0) {
+        songName = userInput;
+    }
+
+    console.log("The song to search: " + songName);
+    spotify.search({type: 'track', query: songName, limit: 10}, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        /* * Artist(s)
+        * * The song's name
+        * * A preview link of the song from Spotify
+        * * The album that the song is from */
+        //console.log("*** Tracks ***")
+        //console.log(data.tracks);
+        var items = data.tracks.items;
+
+        for (var i = 0; i < items.length; i++) {
+            var song = items[i];
+            console.log("*** Song ***")
+            console.log("Artist: " + song.artists[0].name);
+            console.log("Name: " + song.name);
+            console.log("Album: " + song.album.name);
+            console.log("Preview Url: " + song.preview_url);
+            console.log(" ");
+        }
+    });
 
 }
 
 function movieThis() {
-    if (userInput.length === 0) {
-        movieName = "Mr. Nobody";
-    } else {
+    var movieName = "Mr. Nobody";
+    if (userInput.length > 0) {
         movieName = userInput;
     }
 
