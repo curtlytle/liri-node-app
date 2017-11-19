@@ -35,9 +35,9 @@ inq.prompt([
         ]).then(function (uResponse) {
             userInput = uResponse.userInput;
             if (choice === "movie-this") {
-                movieThis();
+                movieThis(userInput);
             } else {
-                spotifyThisSong();
+                spotifyThisSong(userInput);
             }
         });
     } else if (choice === "my-tweets") {
@@ -70,14 +70,13 @@ function myTweets() {
 
 }
 
-function spotifyThisSong() {
+function spotifyThisSong(songName) {
     var spotify = new Spotify({
         id: '88e9d4e923924037b9f5ebe0ee26b171',
         secret: '1e694c52bc704e43ac4c3cb261820c01' });
 
-    var songName = "The Sign";
-    if (userInput.length > 0) {
-        songName = userInput;
+    if (songName.length === 0) {
+        songName = "The Sign";
     }
 
     console.log("The song to search: " + songName);
@@ -106,10 +105,9 @@ function spotifyThisSong() {
 
 }
 
-function movieThis() {
-    var movieName = "Mr. Nobody";
-    if (userInput.length > 0) {
-        movieName = userInput;
+function movieThis(movieName) {
+    if (movieName.length === 0) {
+        movieName = "Mr. Nobody";
     }
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
@@ -144,12 +142,31 @@ function movieThis() {
 function doWhatItSays() {
     fs.readFile("random.txt", {encoding: 'utf-8'}, function (err, data) {
         if (!err) {
-            console.log('received data: ' + data);
-
+            var command = "";
+            var param = "";
             var phrases = data.split(",");
             for (var i = 0; i < phrases.length; i++) {
                 var phrase = phrases[i].trim();
-                console.log(phrase);
+                if (command.length === 0) {
+                    command = phrase;
+                    if (command === "my-tweets") {
+                        console.log("Doing what it says: My Tweets");
+                        myTweets();
+                        command = "";
+                    }
+                } else if (param.length === 0) {
+                    param = phrase;
+
+                    if (command === "movie-this") {
+                        console.log("Doing what it says: Movie This - " + param);
+                        movieThis(param);
+                    } else if (command === "spotify-this-song") {
+                        console.log("Doing what it says: Spotify this song - " + param);
+                        spotifyThisSong(param);
+                    }
+                    command = "";
+                    param = "";
+                }
             }
         } else {
             console.log(err);
