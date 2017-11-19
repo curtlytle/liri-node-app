@@ -62,6 +62,7 @@ function myTweets() {
                 var tweet = tweets[i];
                 console.log("* Tweet created at: " + tweet.created_at);
                 console.log("* Tweet: " + tweet.text);
+                console.log("- - - - - - - -");
             }
             // console.log(tweets);
         }
